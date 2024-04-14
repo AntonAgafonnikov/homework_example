@@ -1,9 +1,8 @@
 package website.ylab.model.workout.basic.minor;
 
-import website.ylab.model.workout.skills.Lifting;
 import website.ylab.model.workout.basic.major.Workout;
+import website.ylab.model.workout.skills.Lifting;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public abstract class WeightTraining extends Workout implements Lifting {

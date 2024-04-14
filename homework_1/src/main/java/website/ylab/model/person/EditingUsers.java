@@ -2,13 +2,12 @@ package website.ylab.model.person;
 
 import website.ylab.model.workout.basic.major.Workout;
 
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.TreeMap;
 
 public interface EditingUsers {
-    List<Workout> getAllUserWorkouts(User user);
-    void addUserWorkout(User user, Workout workout);
-    void deleteUserWorkout(User user, Date date, Workout workout);
-    void editUserWorkout(User user, Date date, Workout workout);
-    void changeUserPassword(String oldPassword, String newPassword);
+    void deleteUser(Scanner scanner);
+
+    TreeMap<String, ArrayList<Workout>> showAllWorkoutsUser(Scanner scanner);
 }

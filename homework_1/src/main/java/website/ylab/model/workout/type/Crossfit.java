@@ -3,13 +3,11 @@ package website.ylab.model.workout.type;
 import website.ylab.model.person.Person;
 import website.ylab.model.workout.basic.major.Workout;
 import website.ylab.model.workout.skills.*;
-import website.ylab.repository.WorkoutRepository;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class Crossfit extends Workout implements Lifting, Running, Swimming, Stretching, Gymnastics{
+public class Crossfit extends Workout implements Lifting, Running, Swimming, Stretching, Gymnastics {
 
     private double equipmentWeightKg;
     private int amountApproaches;
@@ -36,40 +34,36 @@ public class Crossfit extends Workout implements Lifting, Running, Swimming, Str
         this.spendKcal();
     }
 
-
-    @Override
-    public void run() {
-        //TODO
+    public double getEquipmentWeightKg() {
+        return equipmentWeightKg;
     }
 
-    @Override
-    public void pull() {
-        //TODO
+    public int getAmountApproaches() {
+        return amountApproaches;
     }
 
-    @Override
-    public void push() {
-        //TODO
+    public int getAmountRepetitions() {
+        return amountRepetitions;
     }
 
-    @Override
-    public void stretch() {
-        //TODO
+    public double getDistanceMeter() {
+        return distanceMeter;
     }
 
-    @Override
-    public void swim() {
-        //TODO
+    public void setEquipmentWeightKg(double equipmentWeightKg) {
+        this.equipmentWeightKg = equipmentWeightKg;
     }
 
-    @Override
-    public void warmUp() {
-        //TODO
+    public void setAmountApproaches(int amountApproaches) {
+        this.amountApproaches = amountApproaches;
     }
 
-    @Override
-    public void spendKcal() {
-        //TODO
+    public void setAmountRepetitions(int amountRepetitions) {
+        this.amountRepetitions = amountRepetitions;
+    }
+
+    public void setDistanceMeter(double distanceMeter) {
+        this.distanceMeter = distanceMeter;
     }
 
     @Override
@@ -107,12 +101,94 @@ public class Crossfit extends Workout implements Lifting, Running, Swimming, Str
                 break;
             case "3":
                 workout = new Crossfit(date, durationMinutesInput, equipmentWeightKgInput, amountApproaches, amountRepetitions, distanceMeterInput);
+                break;
             default:
                 System.out.println("Invalid command number");
-                break;
+                return;
         }
 
+        addAdditionalInfo(workout, scanner);
         addWorkoutToUserList(person, date, workout);
+    }
+
+    @Override
+    public void editWorkout(Person person, Workout workout, Scanner scanner) {
+        if (workout instanceof Crossfit crossfit) {
+            System.out.println("\nWhich setting do you want to change?" +
+                    "\n   -> 1. Duration: " + crossfit.getDurationMinutes() +
+                    "\n   -> 2. Equipment Weight: " + crossfit.getEquipmentWeightKg() +
+                    "\n   -> 3. Amount approaches: " + crossfit.getAmountApproaches() +
+                    "\n   -> 4. Amount repetitions: " + crossfit.getAmountRepetitions() +
+                    "\n   -> 5. Distance: " + crossfit.getDistanceMeter() +
+                    "\n   -> 6. Additional information): " + crossfit.getAdditionalInfo() +
+                    "\n   -> 0. Go back");
+        }
+
+        String line = scanner.nextLine();
+        System.out.println("Enter value:");
+        String value = scanner.nextLine();
+        if (workout instanceof Crossfit crossfit) {
+            switch (line) {
+                case "1":
+                    crossfit.setDurationMinutes(Integer.parseInt(value));
+                    break;
+                case "2":
+                    crossfit.setEquipmentWeightKg(Double.parseDouble(value));
+                    break;
+                case "3":
+                    crossfit.setAmountApproaches(Integer.parseInt(value));
+                    break;
+                case "4":
+                    crossfit.setAmountRepetitions(Integer.parseInt(value));
+                    break;
+                case "5":
+                    crossfit.setDistanceMeter(Integer.parseInt(value));
+                    break;
+                case "6":
+                    crossfit.setAdditionalInfo(value);
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Invalid command number");
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+        //TODO
+    }
+
+    @Override
+    public void pull() {
+        //TODO
+    }
+
+    @Override
+    public void push() {
+        //TODO
+    }
+
+    @Override
+    public void stretch() {
+        //TODO
+    }
+
+    @Override
+    public void swim() {
+        //TODO
+    }
+
+    @Override
+    public void warmUp() {
+        //TODO
+    }
+
+    @Override
+    public void spendKcal() {
+        //TODO
     }
 
     @Override

@@ -5,7 +5,8 @@ import website.ylab.model.workout.basic.major.Workout;
 import website.ylab.repository.PersonInfoRepository;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 public abstract class Person implements Statistic {
     private String login;

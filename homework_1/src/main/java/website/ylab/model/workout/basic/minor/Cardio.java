@@ -1,17 +1,13 @@
 package website.ylab.model.workout.basic.minor;
 
-import website.ylab.model.person.Person;
 import website.ylab.model.workout.basic.major.Workout;
-import website.ylab.repository.WorkoutRepository;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.Scanner;
 
 public abstract class Cardio extends Workout {
     private double distanceMeter;
 
-    public Cardio(String dateString,  int durationMinutes, double distanceMeter) {
+    public Cardio(String dateString, int durationMinutes, double distanceMeter) {
         super(dateString, durationMinutes);
         this.distanceMeter = distanceMeter;
     }

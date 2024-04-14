@@ -1,14 +1,9 @@
 package website.ylab.model.workout.type;
 
-import website.ylab.model.CustomFormat;
 import website.ylab.model.person.Person;
 import website.ylab.model.workout.basic.major.Workout;
 import website.ylab.model.workout.basic.minor.WeightTraining;
-import website.ylab.repository.WorkoutRepository;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Powerlifting extends WeightTraining {
@@ -45,7 +40,49 @@ public class Powerlifting extends WeightTraining {
 
         Powerlifting workout = new Powerlifting(date, durationMinutesInput, equipmentWeightKgInput, amountApproaches, amountRepetitions);
 
+        addAdditionalInfo(workout, scanner);
         addWorkoutToUserList(person, date, workout);
+    }
+
+    @Override
+    public void editWorkout(Person person, Workout workout, Scanner scanner) {
+        if (workout instanceof Powerlifting powerlifting) {
+            System.out.println("\nWhich setting do you want to change?" +
+                    "\n   -> 1. Duration: " + powerlifting.getDurationMinutes() +
+                    "\n   -> 2. Equipment Weight: " + powerlifting.getEquipmentWeightKg() +
+                    "\n   -> 3. Amount approaches: " + powerlifting.getAmountApproaches() +
+                    "\n   -> 4. Amount repetitions: " + powerlifting.getAmountRepetitions() +
+                    "\n   -> 5. Additional information): " + powerlifting.getAdditionalInfo() +
+                    "\n   -> 0. Go back");
+        }
+
+        String line = scanner.nextLine();
+        System.out.println("Enter value:");
+        String value = scanner.nextLine();
+        if (workout instanceof Powerlifting powerlifting) {
+            switch (line) {
+                case "1":
+                    powerlifting.setDurationMinutes(Integer.parseInt(value));
+                    break;
+                case "2":
+                    powerlifting.setEquipmentWeightKg(Double.parseDouble(value));
+                    break;
+                case "3":
+                    powerlifting.setAmountApproaches(Integer.parseInt(value));
+                    break;
+                case "4":
+                    powerlifting.setAmountRepetitions(Integer.parseInt(value));
+                    break;
+                case "5":
+                    powerlifting.setAdditionalInfo(value);
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Invalid command number");
+                    break;
+            }
+        }
     }
 
     @Override

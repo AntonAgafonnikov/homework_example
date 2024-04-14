@@ -1,19 +1,18 @@
 package website.ylab.model.workout.basic.major;
 
-import website.ylab.model.CustomFormat;
 import website.ylab.model.person.Person;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class Workout {
-    public String dateString;
+    private String dateString;
     private int durationMinutes;
     private String typeOfWorkout;
     private int kcalSpent;
+    private String additionalInfo;
 
     public Workout(String dateString, int durationMinutes) {
         this.dateString = dateString;
@@ -50,11 +49,29 @@ public abstract class Workout {
         this.kcalSpent = kcalSpent;
     }
 
+    public String getDateString() {
+        return dateString;
+    }
+
+    public void setDateString(String dateString) {
+        this.dateString = dateString;
+    }
+
+    public String getAdditionalInfo() {
+        return additionalInfo;
+    }
+
+    public void setAdditionalInfo(String additionalInfo) {
+        this.additionalInfo = additionalInfo;
+    }
+
     public abstract void warmUp();
 
     public abstract void spendKcal();
 
     public abstract void addWorkout(Person person, String date, Scanner scanner);
+
+    public abstract void editWorkout(Person person, Workout workout, Scanner scanner);
 
     public void addWorkoutToUserList(Person person, String date, Workout workout) {
         if (date.isEmpty()) {
@@ -70,6 +87,19 @@ public abstract class Workout {
             person.getUserWorkouts().put(date, new ArrayList<>(List.of(workout)));
         }
         System.out.println("Workout added successfully!");
+    }
+
+    protected static void addAdditionalInfo(Workout workout, Scanner scanner) {
+        System.out.println("""
+                Would you like to add additional information?
+                    -> 1. Yes
+                    -> 2. No""");
+        String line = scanner.nextLine();
+        if ("1".equals(line)) {
+            System.out.println("Enter additional information:");
+            line = scanner.nextLine();
+            workout.setAdditionalInfo(line);
+        }
     }
 
     @Override

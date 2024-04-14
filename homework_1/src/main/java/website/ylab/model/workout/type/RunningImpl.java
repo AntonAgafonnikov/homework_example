@@ -40,8 +40,40 @@ public class RunningImpl extends Cardio implements Running {
 
         RunningImpl workout = new RunningImpl(date, durationMinutesInput, distanceMeterInput);
 
+        addAdditionalInfo(workout, scanner);
         addWorkoutToUserList(person, date, workout);
     }
 
+    @Override
+    public void editWorkout(Person person, Workout workout, Scanner scanner) {
+        if (workout instanceof RunningImpl runningImpl) {
+            System.out.println("\nWhich setting do you want to change?" +
+                    "\n   -> 1. Duration: " + runningImpl.getDurationMinutes() +
+                    "\n   -> 2. Distance: " + runningImpl.getDistanceMeter() +
+                    "\n   -> 3. Additional information): " + runningImpl.getAdditionalInfo() +
+                    "\n   -> 0. Go back");
+        }
 
+        String line = scanner.nextLine();
+        System.out.println("Enter value:");
+        String value = scanner.nextLine();
+        if (workout instanceof RunningImpl runningImpl) {
+            switch (line) {
+                case "1":
+                    runningImpl.setDurationMinutes(Integer.parseInt(value));
+                    break;
+                case "2":
+                    runningImpl.setDistanceMeter(Double.parseDouble(value));
+                    break;
+                case "3":
+                    runningImpl.setAdditionalInfo(value);
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Invalid command number");
+                    break;
+            }
+        }
+    }
 }

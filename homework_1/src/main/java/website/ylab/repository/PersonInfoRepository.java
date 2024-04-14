@@ -10,7 +10,10 @@ import website.ylab.model.workout.type.RunningImpl;
 import website.ylab.model.workout.type.SwimmingImpl;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeMap;
 
 public class PersonInfoRepository {
     private static HashMap<String, String> personLoginAndPasswordMap;
@@ -25,20 +28,20 @@ public class PersonInfoRepository {
         getPersonLoginAndPersonMap().put(user.getLogin(), user);
 
         user.getUserWorkouts().put(CustomFormat.dtf.format(LocalDateTime.now()), new ArrayList<>(List.of(
-                        new SwimmingImpl(CustomFormat.dtf.format(LocalDateTime.now()), 60, 1000))));
+                new SwimmingImpl(CustomFormat.dtf.format(LocalDateTime.now()), 60, 1000))));
         user.getUserWorkouts().put("24-03-10", new ArrayList<>(List.of(
-                new Crossfit("24-03-10", 23,23,23,23))));
+                new Crossfit("24-03-10", 23, 23, 23, 23))));
         user.getUserWorkouts().put("23-07-15", new ArrayList<>(List.of(
-                new Powerlifting("23-07-15", 2, 33,3,2),
-                new RunningImpl("23-07-15", 23,2000))));
+                new Powerlifting("23-07-15", 2, 33, 3, 2),
+                new RunningImpl("23-07-15", 23, 2000))));
         user.getUserWorkouts().put("22-03-10", new ArrayList<>(List.of(
-                new Crossfit("22-03-10", 23,23,23,23))));
+                new Crossfit("22-03-10", 23, 23, 23, 23))));
         user.getUserWorkouts().put("21-07-15", new ArrayList<>(List.of(
-                new Powerlifting("21-07-15", 2, 33,3,2))));
+                new Powerlifting("21-07-15", 2, 33, 3, 2))));
         user.getUserWorkouts().put("20-07-15", new ArrayList<>(List.of(
-                new RunningImpl("20-07-15", 28,3000))));
+                new RunningImpl("20-07-15", 28, 3000))));
         user.getUserWorkouts().put("19-07-15", new ArrayList<>(List.of(
-                new RunningImpl("19-07-15", 28,3000))));
+                new RunningImpl("19-07-15", 28, 3000))));
 
         getPersonLoginAndPasswordMap().put("admin", "admin");
         getPersonLoginAndPersonMap().put("admin", new User("admin", "admin", "admin"));

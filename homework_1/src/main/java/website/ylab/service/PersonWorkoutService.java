@@ -1,6 +1,7 @@
 package website.ylab.service;
 
 import website.ylab.model.CustomFormat;
+import website.ylab.model.person.Admin;
 import website.ylab.model.person.Person;
 import website.ylab.model.workout.basic.major.Workout;
 import website.ylab.repository.WorkoutRepository;
@@ -16,11 +17,19 @@ public class PersonWorkoutService {
                   
                 What do you want to do?
                     -> 1. Add a workout
-                    -> 2. Show a list of all my workouts
+                    -> 2. Show/Edit workout
                     -> 3. Delete workout
-                    -> 4. Edit workout
+                    -> 4. Show a list of all my workouts
                     -> 5. My Kcal statistic
                     -> 0. Exit the application""");
+
+        boolean isAdmin = "Admin".equals(person.getClass().getName());
+        if (isAdmin) {
+            System.out.println("""    
+                    ====ADMIN====
+                    -> 11. Add user
+                    -> 12. Delete user""");
+        }
 
         String number = scanner.nextLine();
         switch (number) {
@@ -28,19 +37,27 @@ public class PersonWorkoutService {
                 addWorkout(person, scanner);
                 break;
             case "2":
-                printUserWorkouts(person.getUserWorkouts());
+                editWorkout(person, scanner);
                 break;
             case "3":
                 deleteWorkout(person, scanner);
                 break;
             case "4":
-                //editWorkout(person,scanner);
+                printUserWorkouts(person.getUserWorkouts());
                 break;
             case "5":
                 showStatisticsKcal(person, scanner);
                 break;
             case "0":
                 return false;
+            case "11":
+                if (person instanceof Admin admin)
+                    admin.deleteUser(scanner);
+                break;
+            case "12":
+                if (person instanceof Admin admin)
+                    printUserWorkouts(admin.showAllWorkoutsUser(scanner));
+                break;
             default:
                 System.out.println("Invalid command number");
                 break;
@@ -76,69 +93,64 @@ public class PersonWorkoutService {
 
     private static void deleteWorkout(Person person, Scanner scanner) {
         System.out.println("""
-                
+                                
                 Do you want to delete today's workout?
                     -> 1. Yes
                     -> 2. No""");
         String line = scanner.nextLine();
 
+        String dateString = "";
         switch (line) {
             case "1":
-                ArrayList<Workout> workoutListToday = person.getUserWorkoutsToday();
-                line = selectWorkoutType(scanner, workoutListToday);
-                person.getUserWorkoutsToday().remove(Integer.parseInt(line) - 1);
-                System.out.println("Training successfully deleted!");
+                dateString = CustomFormat.dtf.format(LocalDateTime.now());
                 break;
             case "2":
                 System.out.println("\nEnter the date in the format dd-mm-yy (for example: 29-01-24):");
-                String dataString = scanner.nextLine();
-
-                ArrayList<Workout> workoutList = person.getUserWorkouts().get(dataString);
-                line = selectWorkoutType(scanner, workoutList);
-
-                workoutList.remove(Integer.parseInt(line) - 1);
-                if (workoutList.isEmpty()) person.getUserWorkouts().remove(dataString);
-                System.out.println("Training successfully deleted!");
+                dateString = scanner.nextLine();
                 break;
             default:
                 System.out.println("Invalid command number");
-                break;
-
+                return;
         }
+
+        ArrayList<Workout> workoutList = person.getUserWorkouts().get(dateString);
+        line = selectWorkoutType(scanner, workoutList);
+
+        workoutList.remove(Integer.parseInt(line) - 1);
+        if (workoutList.size() == 0)
+            person.getUserWorkouts().remove(dateString);
+        System.out.println("Training successfully deleted!");
     }
-//    private static void editWorkout(Person person, Scanner scanner) { todo
-//        System.out.println("""
-//
-//                Do you want to edit today's workout?
-//                    -> 1. Yes
-//                    -> 2. No
-//                """);
-//        String line = scanner.nextLine();
-//
-//        switch (line) {
-//            case "1":
-//                ArrayList<Workout> workoutListToday = person.getUserWorkoutsToday();
-//                line = selectWorkoutType(scanner, workoutListToday);
-//                Workout workoutForEdit = person.getUserWorkoutsToday().get(Integer.parseInt(line) - 1);
-//                System.out.println("Training successfully edited!");
-//                break;
-//            case "2":
-//                System.out.println("""
-//
-//                        Enter the date in the format yy-mm-dd (for example: 24-01-29):
-//                        """);
-//                line = scanner.nextLine();
-//
-//                ArrayList<Workout> workoutList = person.getUserWorkouts().get(line);
-//                line = selectWorkoutType(scanner, workoutList);
-//                person.getUserWorkouts().get(line).remove(Integer.parseInt(line) - 1);
-//                System.out.println("Training successfully edited!");
-//                break;
-//            default:
-//                System.out.println("Invalid command number");
-//                break;
-//        }
-//    }
+
+    private static void editWorkout(Person person, Scanner scanner) {
+        System.out.println("""
+                                
+                Do you want to edit today's workout?
+                    -> 1. Yes
+                    -> 2. No""");
+        String line = scanner.nextLine();
+
+        String dateString = "";
+        switch (line) {
+            case "1":
+                dateString = CustomFormat.dtf.format(LocalDateTime.now());
+                break;
+            case "2":
+                System.out.println("\nEnter the date in the format dd-mm-yy (for example: 29-01-24):");
+                dateString = scanner.nextLine();
+                break;
+            default:
+                System.out.println("Invalid command number");
+                return;
+        }
+
+        ArrayList<Workout> workoutList = person.getUserWorkouts().get(dateString);
+        line = selectWorkoutType(scanner, workoutList);
+
+        Workout workout = workoutList.get(Integer.parseInt(line) - 1);
+        workout.editWorkout(person, workout, scanner);
+        System.out.println("Training successfully changed!");
+    }
 
     private static String selectWorkoutTypeForAdd(Scanner scanner, ArrayList<Workout> workoutsList) {
         int i = 1;
@@ -163,7 +175,7 @@ public class PersonWorkoutService {
 
     private static String askDate(Scanner scanner) {
         System.out.println("""
-                
+                                
                 Do you want to add today's workout?
                     -> 1. Yes
                     -> 2. No""");

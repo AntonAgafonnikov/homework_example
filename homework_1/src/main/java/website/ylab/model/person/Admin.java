@@ -1,38 +1,15 @@
 package website.ylab.model.person;
 
 import website.ylab.model.workout.basic.major.Workout;
+import website.ylab.repository.PersonInfoRepository;
 
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.TreeMap;
 
-public class Admin extends Person implements EditingUsers{
+public class Admin extends Person implements EditingUsers {
     public Admin(String login, String password, String email) {
         super(login, password, email);
-    }
-
-    @Override
-    public List<Workout> getAllUserWorkouts(User user) {
-        return null;
-    }
-
-    @Override
-    public void addUserWorkout(User user, Workout workout) {
-
-    }
-
-    @Override
-    public void deleteUserWorkout(User user, Date date, Workout workout) {
-
-    }
-
-    @Override
-    public void editUserWorkout(User user, Date date, Workout workout) {
-
-    }
-
-    @Override
-    public void changeUserPassword(String oldPassword, String newPassword) {
-
     }
 
     @Override
@@ -41,12 +18,20 @@ public class Admin extends Person implements EditingUsers{
     }
 
     @Override
-    public int getMyRecords() {
-        return 0;
+    public void deleteUser(Scanner scanner) {
+        System.out.println("\nEnter login user for delete");
+        String login = scanner.nextLine();
+
+        PersonInfoRepository.getPersonLoginAndPersonMap().remove(login);
+        PersonInfoRepository.getPersonLoginAndPasswordMap().remove(login);
     }
 
     @Override
-    public int getMyStatistics() {
-        return 0;
+    public TreeMap<String, ArrayList<Workout>> showAllWorkoutsUser(Scanner scanner) {
+        System.out.println("\nEnter login user to show workouts");
+        String login = scanner.nextLine();
+
+        Person user = PersonInfoRepository.getPersonLoginAndPersonMap().get(login);
+        return user.getUserWorkouts();
     }
 }

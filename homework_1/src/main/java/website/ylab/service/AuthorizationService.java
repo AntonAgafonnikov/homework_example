@@ -13,7 +13,6 @@ public class AuthorizationService {
                     
                     ===================================Authorization===================================
                         -> 1. Registration
-                        -> 2. If you forgot your login and password
                     """);
             System.out.println("Enter your login:");
             String login = scanner.nextLine();
@@ -23,7 +22,7 @@ public class AuthorizationService {
             }
 
             if ("2".equals(login)) {
-                //RecoveryService.passwordReset(scanner); TODO
+                //TODO
                 continue;
             }
 
